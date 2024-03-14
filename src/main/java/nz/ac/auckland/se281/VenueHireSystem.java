@@ -4,12 +4,18 @@ import nz.ac.auckland.se281.Types.CateringType;
 import nz.ac.auckland.se281.Types.FloralType;
 
 public class VenueHireSystem {
+  // field
+  int VenueAmount = 0;
 
   public VenueHireSystem() {}
 
   public void printVenues() {
-    // TODO implement this method
-    MessageCli.NO_VENUES.printMessage();
+    if (VenueAmount > 0) {
+      MessageCli.NUMBER_VENUES.printMessage();
+      MessageCli.VENUE_ENTRY.printMessage();
+    } else {
+      MessageCli.NO_VENUES.printMessage();
+    }
   }
 
   public void createVenue(
