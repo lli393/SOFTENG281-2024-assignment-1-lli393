@@ -9,7 +9,7 @@ public class VenueHireSystem {
 
   public void printVenues() {
     // TODO implement this method
-    System.out.println("There are no venues in the system. Please create a venue first.");
+    MessageCli.NO_VENUES.printMessage();
   }
 
   public void createVenue(
