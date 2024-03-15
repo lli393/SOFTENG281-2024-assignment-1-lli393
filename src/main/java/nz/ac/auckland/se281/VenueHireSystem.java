@@ -94,7 +94,21 @@ public class VenueHireSystem {
       MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", "");
     }
 
-    // venue hire fee
+    // venue hire fee is whole integer, positive > 0
+    try {
+      // convert capacityInput to numbers
+      int tempNumber = Integer.parseInt(hireFeeInput);
+      // check if it is positive
+      if (tempNumber <= 0) {
+        success = false;
+        MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", " positive");
+      }
+
+    } catch (Exception e) {
+      // if the capacityInput is not valid
+      success = false;
+      MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", "");
+    }
 
     // succesfully create venue if pass all of the above
     if (success) {
