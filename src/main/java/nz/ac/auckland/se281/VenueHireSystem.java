@@ -68,25 +68,43 @@ public class VenueHireSystem {
 
   public void createVenue(
       String venueName, String venueCode, String capacityInput, String hireFeeInput) {
+    boolean success = true;
     // if venue name is blank
+    if (venueName == null || venueName.isEmpty() || venueName.trim().isEmpty()) {
+      // venueName is blank
+      success = false;
+      MessageCli.VENUE_NOT_CREATED_EMPTY_NAME.printMessage();
+    }
+    ///////// if venueCode ==  //else if (...){}
+    // if venue code is repeated
 
-    if (venueName != null && !venueName.isEmpty() && !venueName.trim().isEmpty()) {
-      // venueName is not empty
+    // venue capacity is whole integer, positive > 0
+    try {
+      // convert capacityInput to numbers
+      int tempNumber = Integer.parseInt(capacityInput);
+      // check if it is positive
+      if (tempNumber <= 0) {
+        success = false;
+        MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", " positive");
+      }
+
+    } catch (Exception e) {
+      // if the capacityInput is not valid
+      success = false;
+      MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", "");
+    }
+
+    // venue hire fee
+
+    // succesfully create venue if pass all of the above
+    if (success) {
       this.venueID = venueID++;
       this.venueName = venueName;
       this.venueCode = venueCode;
       this.capacityInput = capacityInput;
       this.hireFeeInput = hireFeeInput;
       MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
-    } else {
-      // venueName is blank
-      MessageCli.VENUE_NOT_CREATED_EMPTY_NAME.printMessage();
     }
-
-    // if venue code is repeated
-    // venue capacity and hiring fee is whole integer, positive > 0
-    // succesfully create venue if pass all of the above
-
   }
 
   public void setSystemDate(String dateInput) {
