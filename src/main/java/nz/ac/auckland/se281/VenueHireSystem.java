@@ -79,7 +79,14 @@ public class VenueHireSystem {
     }
     ///////// if venueCode ==  //else if (...){}
     // if venue code is repeated
+    for (Venue code : venueList) {
 
+      // if we find an "equivalent book" (in terms of object reference equality), sell it
+      if (code.equals(venueCode)) {
+        MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.getMessage(venueCode, venueName);
+        MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.printMessage(venueCode, venueName);
+      }
+    }
     // venue capacity is whole integer, positive > 0
     try {
       // convert capacityInput to numbers
