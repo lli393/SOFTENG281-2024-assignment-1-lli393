@@ -17,4 +17,24 @@ public class Venue {
     this.venueID = nextID;
     nextID++;
   }
+
+  public int getID() {
+    return venueID;
+  }
+
+  public String getName() {
+    return venueName;
+  }
+
+  public String getCode() {
+    return venueCode;
+  }
+
+  public String getCapacity() {
+    return capacityInput;
+  }
+
+  public String getFee() {
+    return hireFeeInput;
+  }
 }

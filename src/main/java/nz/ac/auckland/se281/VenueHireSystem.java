@@ -6,30 +6,28 @@ import nz.ac.auckland.se281.Types.FloralType;
 
 public class VenueHireSystem {
   // field
-  int venueID = 0;
-  String venueName;
-  String venueCode;
-  String capacityInput;
-  String hireFeeInput;
+
   ArrayList<Venue> venueList = new ArrayList<Venue>();
+
+  int venueAmount = venueList.size();
 
   public VenueHireSystem() {}
 
   public void printVenues() {
     // print numbers of venue(s)
-    if (venueID >= 10) {
+    if (venueAmount >= 10) {
       // it uses “are”, the quantity is a digit, “venues” is plural, and the sentence ends with a
       // colon (“:”)
       MessageCli.NUMBER_VENUES.getMessage(
-          "are", String.valueOf(venueID), "s"); // Using the getMessage() method
+          "are", String.valueOf(venueAmount), "s"); // Using the getMessage() method
       MessageCli.NUMBER_VENUES.printMessage(
-          "are", String.valueOf(venueID), "s"); // Using the printMessage() method
+          "are", String.valueOf(venueAmount), "s"); // Using the printMessage() method
 
-    } else if (venueID > 1) {
+    } else if (venueAmount > 1) {
       // it uses “are”, the quantity is a word, “venues” is plural, and the sentence ends with a
       // colon (“:”)
       String venueWord = null;
-      switch (venueID) {
+      switch (venueAmount) {
         case 2:
           venueWord = "two";
         case 3:
@@ -51,18 +49,22 @@ public class VenueHireSystem {
       MessageCli.NUMBER_VENUES.printMessage(
           "are", venueWord, "s"); // Using the printMessage() method
 
-    } else if (venueID == 1) {
+    } else if (venueAmount == 1) {
       // it uses “is”, the quantity is a word, “venue” is singular, and the sentence ends with a
       // colon (“:”)
       MessageCli.NUMBER_VENUES.getMessage("is", "one", ""); // Using the getMessage() method
       MessageCli.NUMBER_VENUES.printMessage("is", "one", ""); // Using the printMessage() method
 
-    } else if (venueID == 0) {
+    } else if (venueAmount == 0) {
       // the quantity is “no”, “venues” is plural, and the sentence ends with a period (“.”)
       MessageCli.NO_VENUES.printMessage();
     }
     // loop for every successfully added venue(s)
-    for (int i = 0; i < venueID; i++) {
+    for (Venue venue : venueList) {
+      String venueName = venue.getName();
+      String venueCode = venue.getCode();
+      String capacityInput = venue.getCapacity();
+      String hireFeeInput = venue.getFee();
       MessageCli.VENUE_ENTRY.getMessage(venueName, venueCode, capacityInput, hireFeeInput, "");
       MessageCli.VENUE_ENTRY.printMessage(venueName, venueCode, capacityInput, hireFeeInput, "");
     }
@@ -121,11 +123,8 @@ public class VenueHireSystem {
 
     // succesfully create venue if pass all of the above
     if (success) {
-      this.venueID = venueID++;
-      this.venueName = venueName;
-      this.venueCode = venueCode;
-      this.capacityInput = capacityInput;
-      this.hireFeeInput = hireFeeInput;
+      Venue venue = new Venue(venueName, venueCode, capacityInput, hireFeeInput);
+      MessageCli.VENUE_SUCCESSFULLY_CREATED.getMessage(venueName, venueCode);
       MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
     }
   }
