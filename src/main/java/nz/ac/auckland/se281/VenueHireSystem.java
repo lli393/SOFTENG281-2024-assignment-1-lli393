@@ -21,27 +21,35 @@ public class VenueHireSystem {
       MessageCli.NUMBER_VENUES.printMessage(
           "are", String.valueOf(venueAmount), "s"); // Using the printMessage() method
 
-    } else if (venueAmount > 1) {
+    } else if (venueAmount > 1 && venueAmount < 10) {
       // it uses “are”, the quantity is a word, “venues” is plural, and the sentence ends with a
       // colon (“:”)
       String venueWord = null;
       switch (venueAmount) {
         case 2:
           venueWord = "two";
+          break;
         case 3:
           venueWord = "three";
+          break;
         case 4:
           venueWord = "four";
+          break;
         case 5:
           venueWord = "five";
+          break;
         case 6:
           venueWord = "six";
+          break;
         case 7:
           venueWord = "seven";
+          break;
         case 8:
           venueWord = "eight";
+          break;
         case 9:
           venueWord = "nine";
+          break;
       }
       MessageCli.NUMBER_VENUES.getMessage("are", venueWord, "s"); // Using the getMessage() method
       MessageCli.NUMBER_VENUES.printMessage(
