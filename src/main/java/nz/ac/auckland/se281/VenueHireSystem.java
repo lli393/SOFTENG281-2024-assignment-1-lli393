@@ -78,8 +78,8 @@ public class VenueHireSystem {
       MessageCli.VENUE_NOT_CREATED_EMPTY_NAME.printMessage();
     }
     // if venue code is repeated
-    for (Venue code : venueList) {
-
+    for (Venue venue : venueList) {
+      String code = venue.getCode();
       // if we find an "equivalent book" (in terms of object reference equality), sell it
       if (code.equals(venueCode)) {
         success = false;
