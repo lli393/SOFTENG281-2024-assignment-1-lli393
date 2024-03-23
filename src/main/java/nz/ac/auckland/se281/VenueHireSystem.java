@@ -6,14 +6,12 @@ import nz.ac.auckland.se281.Types.FloralType;
 
 public class VenueHireSystem {
   // field
-
   ArrayList<Venue> venueList = new ArrayList<Venue>();
-
-  int venueAmount = venueList.size();
 
   public VenueHireSystem() {}
 
   public void printVenues() {
+    int venueAmount = venueList.size();
     // print numbers of venue(s)
     if (venueAmount >= 10) {
       // it uses “are”, the quantity is a digit, “venues” is plural, and the sentence ends with a
@@ -79,12 +77,12 @@ public class VenueHireSystem {
       success = false;
       MessageCli.VENUE_NOT_CREATED_EMPTY_NAME.printMessage();
     }
-    ///////// if venueCode ==  //else if (...){}
     // if venue code is repeated
     for (Venue code : venueList) {
 
       // if we find an "equivalent book" (in terms of object reference equality), sell it
       if (code.equals(venueCode)) {
+        success = false;
         MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.getMessage(venueCode, venueName);
         MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.printMessage(venueCode, venueName);
       }
@@ -123,7 +121,9 @@ public class VenueHireSystem {
 
     // succesfully create venue if pass all of the above
     if (success) {
-      Venue venue = new Venue(venueName, venueCode, capacityInput, hireFeeInput);
+      // add venue
+      Venue newVenue = new Venue(venueName, venueCode, capacityInput, hireFeeInput);
+      venueList.add(newVenue);
       MessageCli.VENUE_SUCCESSFULLY_CREATED.getMessage(venueName, venueCode);
       MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
     }
