@@ -132,10 +132,11 @@ public class VenueHireSystem {
     // succesfully create venue if pass all of the above
     if (success) {
       // add venue
-      Venue newVenue = new Venue(venueName, venueCode, capacityInput, hireFeeInput);
+      // venueName is trimmed if there are spaces at either side
+      Venue newVenue = new Venue(venueName.trim(), venueCode, capacityInput, hireFeeInput);
       venueList.add(newVenue);
-      MessageCli.VENUE_SUCCESSFULLY_CREATED.getMessage(venueName, venueCode);
-      MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
+      MessageCli.VENUE_SUCCESSFULLY_CREATED.getMessage(venueName.trim(), venueCode);
+      MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName.trim(), venueCode);
     }
   }
 
