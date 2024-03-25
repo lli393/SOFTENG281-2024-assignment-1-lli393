@@ -6,20 +6,18 @@ public class Venue {
   private String venueCode;
   private String capacityInput;
   private String hireFeeInput;
-  private int venueID;
-  private int nextID = 0;
+  private int venueNumber = 0;
 
   public Venue(String venueName, String venueCode, String capacityInput, String hireFeeInput) {
     this.venueName = venueName;
     this.venueCode = venueCode;
     this.capacityInput = capacityInput;
     this.hireFeeInput = hireFeeInput;
-    this.venueID = nextID;
-    nextID++;
+    this.venueNumber = venueNumber++;
   }
 
   public int getID() {
-    return venueID;
+    return venueNumber;
   }
 
   public String getName() {
