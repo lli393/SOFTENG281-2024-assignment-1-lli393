@@ -5,8 +5,10 @@ import nz.ac.auckland.se281.Types.CateringType;
 import nz.ac.auckland.se281.Types.FloralType;
 
 public class VenueHireSystem {
-  // field
+  // Task 1 field
   private ArrayList<Venue> venueList = new ArrayList<Venue>();
+  // Task 2 field
+  String currentDate;
 
   public VenueHireSystem() {}
 
@@ -141,12 +143,20 @@ public class VenueHireSystem {
   }
 
   public void setSystemDate(String dateInput) {
+    // assume dateInput is always valid
+    currentDate = dateInput;
     MessageCli.DATE_SET.getMessage(dateInput);
     MessageCli.DATE_SET.printMessage(dateInput);
   }
 
   public void printSystemDate() {
-    // TODO implement this method
+    if (currentDate != null) {
+      // if current date is not empty
+      MessageCli.CURRENT_DATE.getMessage(currentDate);
+      MessageCli.CURRENT_DATE.printMessage(currentDate);
+    } else {
+      MessageCli.CURRENT_DATE.printMessage("not set");
+    }
   }
 
   public void makeBooking(String[] options) {
