@@ -195,7 +195,34 @@ public class VenueHireSystem {
 
     // venue must be available on specified date
 
+    
     // the booking date must not be in the past
+    // split the booking date
+    String[] bookingDateParts = bookingDate.split("/");
+    String bookDay = bookingDateParts[0]; // "DD"
+    String bookMonth = bookingDateParts[1]; // "MM"
+    String bookYear = bookingDateParts[2]; // "YYYY"
+    // split the current date
+    String[] currentDateParts = bookingDate.split("/");
+    String currentDay = currentDateParts[0]; // "DD"
+    String currentMonth = currentDateParts[1]; // "MM"
+    String currentYear = currentDateParts[2]; // "YYYY"
+    // in the past means current year is greater than booking year
+    if (Integer.parseInt(currentYear) > Integer.parseInt(bookYear)) {
+      successBook = false;
+    } else if ((Integer.parseInt(currentYear) < Integer.parseInt(bookYear))) {
+      // booking year is in the future, no action needed
+      // same current year and booking year will proceed
+    } else if ((Integer.parseInt(currentMonth) > Integer.parseInt(bookMonth))) {
+      // booking month is in the past
+      successBook = false;
+    } else if ((Integer.parseInt(currentMonth) < Integer.parseInt(bookMonth))) {
+      // booking month is in the future, no action needed
+      // same current month and booking month will proceed
+    } else if ((Integer.parseInt(currentDay) > Integer.parseInt(bookDay))) {
+      // booking date is in the past
+      successBook = false;
+    }
 
     // pass all condition, booking create
     if (successBook) {}
