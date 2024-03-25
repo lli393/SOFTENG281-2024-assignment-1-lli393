@@ -2,11 +2,11 @@ package nz.ac.auckland.se281;
 
 public class Venue {
 
-  public String venueName;
-  public String venueCode;
-  public String capacityInput;
-  public String hireFeeInput;
-  public int venueID;
+  private String venueName;
+  private String venueCode;
+  private String capacityInput;
+  private String hireFeeInput;
+  private int venueID;
   private int nextID = 0;
 
   public Venue(String venueName, String venueCode, String capacityInput, String hireFeeInput) {
