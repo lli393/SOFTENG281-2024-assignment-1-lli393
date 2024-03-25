@@ -183,7 +183,18 @@ public class VenueHireSystem {
     }
 
     // venue code must exist
+    for (Venue venue : venueList) {
+      if (venue.getCode() == bookingCode) {
+        // if code exists, exit the for loop
+        break;
+      } else {
+        // if code doesn't match or exist
+        successBook = false;
+      }
+    }
+
     // venue must be available on specified date
+
     // the booking date must not be in the past
 
     // pass all condition, booking create
