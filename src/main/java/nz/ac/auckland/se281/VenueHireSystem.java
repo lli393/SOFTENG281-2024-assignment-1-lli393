@@ -141,7 +141,8 @@ public class VenueHireSystem {
   }
 
   public void setSystemDate(String dateInput) {
-    // TODO implement this method
+    MessageCli.DATE_SET.getMessage(dateInput);
+    MessageCli.DATE_SET.printMessage(dateInput);
   }
 
   public void printSystemDate() {
