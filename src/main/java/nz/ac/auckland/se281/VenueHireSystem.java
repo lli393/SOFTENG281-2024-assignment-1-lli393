@@ -177,6 +177,11 @@ public class VenueHireSystem {
     }
 
     // there must be at least one venue in system
+    if (venueList.size() == 0) {
+      successBook = false;
+      MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
+    }
+
     // venue code must exist
     // venue must be available on specified date
     // the booking date must not be in the past
