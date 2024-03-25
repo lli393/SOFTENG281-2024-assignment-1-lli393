@@ -67,6 +67,7 @@ public class VenueHireSystem {
       // the quantity is “no”, “venues” is plural, and the sentence ends with a period (“.”)
       MessageCli.NO_VENUES.printMessage();
     }
+
     // loop for every successfully added venue(s)
     for (Venue venue : venueList) {
       String venueName = venue.getName();
@@ -80,38 +81,40 @@ public class VenueHireSystem {
 
   public void createVenue(
       String venueName, String venueCode, String capacityInput, String hireFeeInput) {
-    boolean success = true;
+    boolean successCreate = true;
     // if venue name is blank
     if (venueName == null || venueName.isEmpty() || venueName.trim().isEmpty()) {
       // venueName is blank
-      success = false;
+      successCreate = false;
       MessageCli.VENUE_NOT_CREATED_EMPTY_NAME.printMessage();
     }
+
     // if venue code is repeated
     for (Venue venue : venueList) {
       String code = venue.getCode();
       String name;
       // if we find an "equivalent book" (in terms of object reference equality), sell it
       if (code.equals(venueCode)) {
-        success = false;
+        successCreate = false;
         name = venue.getName();
         MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.getMessage(venueCode, name);
         MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.printMessage(venueCode, name);
       }
     }
+
     // venue capacity is whole integer, positive > 0
     try {
       // convert capacityInput to numbers
       int tempNumber = Integer.parseInt(capacityInput);
       // check if it is positive
       if (tempNumber <= 0) {
-        success = false;
+        successCreate = false;
         MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", " positive");
       }
 
     } catch (Exception e) {
       // if the capacityInput is not valid
-      success = false;
+      successCreate = false;
       MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", "");
     }
 
@@ -121,18 +124,18 @@ public class VenueHireSystem {
       int tempNumber = Integer.parseInt(hireFeeInput);
       // check if it is positive
       if (tempNumber <= 0) {
-        success = false;
+        successCreate = false;
         MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", " positive");
       }
 
     } catch (Exception e) {
       // if the capacityInput is not valid
-      success = false;
+      successCreate = false;
       MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", "");
     }
 
     // succesfully create venue if pass all of the above
-    if (success) {
+    if (successCreate) {
       // add venue
       // venueName is trimmed if there are spaces at either side
       Venue newVenue = new Venue(venueName.trim(), venueCode, capacityInput, hireFeeInput);
@@ -160,7 +163,26 @@ public class VenueHireSystem {
   }
 
   public void makeBooking(String[] options) {
-    // TODO implement this method
+    // options in order: venue code, request date, email, number of attendees
+    String bookingCode = options[0];
+    String bookingDate = options[1];
+    String bookingEmail = options[2];
+    String bookingCapacity = options[3];
+    boolean successBook = true;
+
+    // the system date must be set
+    if (currentDate == null) {
+      successBook = false;
+      MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
+    }
+
+    // there must be at least one venue in system
+    // venue code must exist
+    // venue must be available on specified date
+    // the booking date must not be in the past
+
+    // pass all condition, booking create
+    if (successBook) {}
   }
 
   public void printBookings(String venueCode) {
