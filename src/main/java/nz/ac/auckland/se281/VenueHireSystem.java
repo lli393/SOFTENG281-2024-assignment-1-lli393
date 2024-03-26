@@ -87,6 +87,7 @@ public class VenueHireSystem {
       // venueName is blank
       successCreate = false;
       MessageCli.VENUE_NOT_CREATED_EMPTY_NAME.printMessage();
+      return;
     }
 
     // if venue code is repeated
@@ -99,6 +100,7 @@ public class VenueHireSystem {
         name = venue.getName();
         MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.getMessage(venueCode, name);
         MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.printMessage(venueCode, name);
+        return;
       }
     }
 
@@ -110,12 +112,14 @@ public class VenueHireSystem {
       if (tempNumber <= 0) {
         successCreate = false;
         MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", " positive");
+        return;
       }
 
     } catch (Exception e) {
       // if the capacityInput is not valid
       successCreate = false;
       MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", "");
+      return;
     }
 
     // venue hire fee is whole integer, positive > 0
@@ -126,12 +130,14 @@ public class VenueHireSystem {
       if (tempNumber <= 0) {
         successCreate = false;
         MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", " positive");
+        return;
       }
 
     } catch (Exception e) {
       // if the capacityInput is not valid
       successCreate = false;
       MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", "");
+      return;
     }
 
     // succesfully create venue if pass all of the above
@@ -174,12 +180,14 @@ public class VenueHireSystem {
     if (currentDate == null) {
       successBook = false;
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
+      return;
     }
 
     // there must be at least one venue in system
     if (venueList.size() == 0) {
       successBook = false;
       MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
+      return;
     }
 
     // venue code must exist
@@ -190,12 +198,14 @@ public class VenueHireSystem {
       } else {
         // if code doesn't match or exist
         successBook = false;
+        MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.getMessage(bookingCode);
+        MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(bookingCode);
+        return;
       }
     }
 
     // venue must be available on specified date
 
-    
     // the booking date must not be in the past
     // split the booking date
     String[] bookingDateParts = bookingDate.split("/");
@@ -203,29 +213,50 @@ public class VenueHireSystem {
     String bookMonth = bookingDateParts[1]; // "MM"
     String bookYear = bookingDateParts[2]; // "YYYY"
     // split the current date
-    String[] currentDateParts = bookingDate.split("/");
+    String[] currentDateParts = currentDate.split("/");
     String currentDay = currentDateParts[0]; // "DD"
     String currentMonth = currentDateParts[1]; // "MM"
     String currentYear = currentDateParts[2]; // "YYYY"
     // in the past means current year is greater than booking year
     if (Integer.parseInt(currentYear) > Integer.parseInt(bookYear)) {
       successBook = false;
+      MessageCli.BOOKING_NOT_MADE_PAST_DATE.getMessage(bookingDate, currentDate);
+      MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(bookingDate, currentDate);
+      return;
     } else if ((Integer.parseInt(currentYear) < Integer.parseInt(bookYear))) {
       // booking year is in the future, no action needed
       // same current year and booking year will proceed
     } else if ((Integer.parseInt(currentMonth) > Integer.parseInt(bookMonth))) {
       // booking month is in the past
       successBook = false;
+      MessageCli.BOOKING_NOT_MADE_PAST_DATE.getMessage(bookingDate, currentDate);
+      MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(bookingDate, currentDate);
+      return;
     } else if ((Integer.parseInt(currentMonth) < Integer.parseInt(bookMonth))) {
       // booking month is in the future, no action needed
       // same current month and booking month will proceed
     } else if ((Integer.parseInt(currentDay) > Integer.parseInt(bookDay))) {
       // booking date is in the past
       successBook = false;
+      MessageCli.BOOKING_NOT_MADE_PAST_DATE.getMessage(bookingDate, currentDate);
+      MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(bookingDate, currentDate);
+      return;
     }
 
     // pass all condition, booking create
-    if (successBook) {}
+    if (successBook) {
+      String bookingReference = BookingReferenceGenerator.generateBookingReference();
+      String bookingVenue = null;
+      for (Venue venue : venueList) {
+        if (venue.getCode() == bookingCode) {
+          bookingVenue = venue.getName();
+        }
+      }
+      MessageCli.MAKE_BOOKING_SUCCESSFUL.getMessage(
+          "'" + bookingReference + "'", "'" + bookingVenue + "'", bookingDate, bookingCapacity);
+      MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
+          "'" + bookingReference + "'", "'" + bookingVenue + "'", bookingDate, bookingCapacity);
+    }
   }
 
   public void printBookings(String venueCode) {
