@@ -9,6 +9,7 @@ public class VenueHireSystem {
   private ArrayList<Venue> venueList = new ArrayList<Venue>();
   // Task 2 field
   String currentDate;
+  private ArrayList<Booking> bookingList = new ArrayList<Booking>();
 
   public VenueHireSystem() {}
 
@@ -252,6 +253,11 @@ public class VenueHireSystem {
           bookingVenue = venue.getName();
         }
       }
+      // create booking object new booking and store the following variables
+      Booking newBooking =
+          new Booking(bookingVenue, bookingCode, bookingDate, bookingEmail, bookingCapacity);
+      // add the object to the bookingList arrayList
+      bookingList.add(newBooking);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.getMessage(
           "'" + bookingReference + "'", "'" + bookingVenue + "'", bookingDate, bookingCapacity);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
