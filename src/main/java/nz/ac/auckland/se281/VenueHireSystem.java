@@ -193,16 +193,20 @@ public class VenueHireSystem {
 
     // venue code must exist
     for (Venue venue : venueList) {
-      if (venue.getCode() == bookingCode) {
+      if (venue.getCode().equals(bookingCode)) {
         // if code exists, exit the for loop
+        // boolean success remain true
+        successBook = true;
         break;
       } else {
         // if code doesn't match or exist
         successBook = false;
-        MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.getMessage(bookingCode);
-        MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(bookingCode);
-        return;
       }
+    }
+    if (!successBook) {
+      MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.getMessage(bookingCode);
+      MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(bookingCode);
+      return;
     }
 
     // venue must be available on specified date
@@ -249,7 +253,7 @@ public class VenueHireSystem {
       String bookingReference = BookingReferenceGenerator.generateBookingReference();
       String bookingVenue = null;
       for (Venue venue : venueList) {
-        if (venue.getCode() == bookingCode) {
+        if (venue.getCode().equals(bookingCode)) {
           bookingVenue = venue.getName();
         }
       }
@@ -259,9 +263,9 @@ public class VenueHireSystem {
       // add the object to the bookingList arrayList
       bookingList.add(newBooking);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.getMessage(
-          "'" + bookingReference + "'", "'" + bookingVenue + "'", bookingDate, bookingCapacity);
+          bookingReference, bookingVenue, bookingDate, bookingCapacity);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
-          "'" + bookingReference + "'", "'" + bookingVenue + "'", bookingDate, bookingCapacity);
+          bookingReference, bookingVenue, bookingDate, bookingCapacity);
     }
   }
 
