@@ -9,6 +9,8 @@ public class VenueHireSystem {
   private ArrayList<Venue> venueList = new ArrayList<Venue>();
   // Task 2 field
   String currentDate;
+  int bookingVenueNumber;
+  String bookingVenueName = null;
   private ArrayList<Booking> bookingList = new ArrayList<Booking>();
 
   public VenueHireSystem() {}
@@ -192,9 +194,13 @@ public class VenueHireSystem {
     }
 
     // venue code must exist
-    for (Venue venue : venueList) {
-      if (venue.getCode().equals(bookingCode)) {
+    for (int i = 0; i < venueList.size(); i++) {
+      if (venueList.get(i).getCode().equals(bookingCode)) {
         // if code exists, exit the for loop
+        // store the name of the venue
+        bookingVenueName = venueList.get(i).getName();
+        // get the location of venue in venueList
+        bookingVenueNumber = i;
         // boolean success remain true
         successBook = true;
         break;
@@ -248,24 +254,31 @@ public class VenueHireSystem {
       return;
     }
 
+    // if the date for specific venue has already booked
+    if (venueList.get(bookingVenueNumber).getCode().equals(bookingCode)) {
+      for (Booking bookNumber : bookingList) {
+        if (bookNumber.getDate().equals(bookingDate)) {
+          successBook = false;
+          MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.getMessage(
+              bookingVenueName, bookingDate);
+          MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(
+              bookingVenueName, bookingDate);
+        }
+      }
+    }
+
     // pass all condition, booking create
     if (successBook) {
       String bookingReference = BookingReferenceGenerator.generateBookingReference();
-      String bookingVenue = null;
-      for (Venue venue : venueList) {
-        if (venue.getCode().equals(bookingCode)) {
-          bookingVenue = venue.getName();
-        }
-      }
       // create booking object new booking and store the following variables
       Booking newBooking =
-          new Booking(bookingVenue, bookingCode, bookingDate, bookingEmail, bookingCapacity);
+          new Booking(bookingVenueName, bookingCode, bookingDate, bookingEmail, bookingCapacity);
       // add the object to the bookingList arrayList
       bookingList.add(newBooking);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.getMessage(
-          bookingReference, bookingVenue, bookingDate, bookingCapacity);
+          bookingReference, bookingVenueName, bookingDate, bookingCapacity);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
-          bookingReference, bookingVenue, bookingDate, bookingCapacity);
+          bookingReference, bookingVenueName, bookingDate, bookingCapacity);
     }
   }
 

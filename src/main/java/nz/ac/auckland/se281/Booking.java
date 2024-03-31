@@ -19,4 +19,8 @@ public class Booking {
     this.bookingEmail = bookingEmail;
     this.bookingCapacity = bookingCapacity;
   }
+
+  public String getDate() {
+    return bookingDate;
+  }
 }
