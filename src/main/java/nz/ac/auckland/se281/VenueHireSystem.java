@@ -10,8 +10,10 @@ public class VenueHireSystem {
   // Task 2 field
   String currentDate;
   String availableDate;
+  String oldBookingCapacity;
   int bookingVenueNumber;
   String bookingVenueName = null;
+  String bookingVenueCapacity;
   private ArrayList<Booking> bookingList = new ArrayList<Booking>();
 
   public VenueHireSystem() {}
@@ -204,6 +206,8 @@ public class VenueHireSystem {
         bookingVenueName = venueList.get(i).getName();
         // get the location of venue in venueList
         bookingVenueNumber = i;
+        // get the venue capacity for booking
+        bookingVenueCapacity = venueList.get(i).getCapacity();
 
         // if the date for specific venue has already booked
         for (Booking bookNumber : bookingList) {
@@ -268,6 +272,28 @@ public class VenueHireSystem {
       MessageCli.BOOKING_NOT_MADE_PAST_DATE.getMessage(bookingDate, currentDate);
       MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(bookingDate, currentDate);
       return;
+    }
+
+    // if number of attendees is less than 25% or more than 100% of venue capacity
+    if (Integer.parseInt(bookingCapacity) < 0.25 * Integer.parseInt(bookingVenueCapacity)) {
+      // store previous number of attendee
+      oldBookingCapacity = bookingCapacity;
+      // set number of attendees to 25% of venue capacity
+      bookingCapacity = Integer.toString((int) (0.25 * Integer.parseInt(bookingVenueCapacity)));
+      MessageCli.BOOKING_ATTENDEES_ADJUSTED.getMessage(
+          oldBookingCapacity, bookingCapacity, bookingVenueCapacity);
+      MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(
+          oldBookingCapacity, bookingCapacity, bookingVenueCapacity);
+
+    } else if (Integer.parseInt(bookingCapacity) > Integer.parseInt(bookingVenueCapacity)) {
+      // store previous number of attendee
+      oldBookingCapacity = bookingCapacity;
+      // set number of attendees to venue capacity
+      bookingCapacity = bookingVenueCapacity;
+      MessageCli.BOOKING_ATTENDEES_ADJUSTED.getMessage(
+          oldBookingCapacity, bookingCapacity, bookingVenueCapacity);
+      MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(
+          oldBookingCapacity, bookingCapacity, bookingVenueCapacity);
     }
 
     // pass all condition, create booking
