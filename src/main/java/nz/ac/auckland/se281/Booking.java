@@ -1,20 +1,23 @@
 package nz.ac.auckland.se281;
 
 public class Booking {
-  private String bookingVenue;
+  private String bookingVenueName;
   private String bookingCode;
+  private String bookingReference;
   private String bookingDate;
   private String bookingEmail;
   private String bookingCapacity;
 
   public Booking(
-      String bookingVenue,
+      String bookingVenueName,
       String bookingCode,
+      String bookingReference,
       String bookingDate,
       String bookingEmail,
       String bookingCapacity) {
-    this.bookingVenue = bookingVenue;
+    this.bookingVenueName = bookingVenueName;
     this.bookingCode = bookingCode;
+    this.bookingReference = bookingReference;
     this.bookingDate = bookingDate;
     this.bookingEmail = bookingEmail;
     this.bookingCapacity = bookingCapacity;
@@ -22,5 +25,9 @@ public class Booking {
 
   public String getDate() {
     return bookingDate;
+  }
+
+  public String getCode() {
+    return bookingCode;
   }
 }

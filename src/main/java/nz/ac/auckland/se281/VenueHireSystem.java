@@ -9,6 +9,7 @@ public class VenueHireSystem {
   private ArrayList<Venue> venueList = new ArrayList<Venue>();
   // Task 2 field
   String currentDate;
+  String availableDate;
   int bookingVenueNumber;
   String bookingVenueName = null;
   private ArrayList<Booking> bookingList = new ArrayList<Booking>();
@@ -77,8 +78,10 @@ public class VenueHireSystem {
       String venueCode = venue.getCode();
       String capacityInput = venue.getCapacity();
       String hireFeeInput = venue.getFee();
-      MessageCli.VENUE_ENTRY.getMessage(venueName, venueCode, capacityInput, hireFeeInput, "");
-      MessageCli.VENUE_ENTRY.printMessage(venueName, venueCode, capacityInput, hireFeeInput, "");
+      MessageCli.VENUE_ENTRY.getMessage(
+          venueName, venueCode, capacityInput, hireFeeInput, availableDate);
+      MessageCli.VENUE_ENTRY.printMessage(
+          venueName, venueCode, capacityInput, hireFeeInput, availableDate);
     }
   }
 
@@ -201,6 +204,19 @@ public class VenueHireSystem {
         bookingVenueName = venueList.get(i).getName();
         // get the location of venue in venueList
         bookingVenueNumber = i;
+
+        // if the date for specific venue has already booked
+        for (Booking bookNumber : bookingList) {
+          if (bookNumber.getDate().equals(bookingDate)) {
+            successBook = false;
+            MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.getMessage(
+                bookingVenueName, bookingDate);
+            MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(
+                bookingVenueName, bookingDate);
+            return;
+          }
+        }
+
         // boolean success remain true
         successBook = true;
         break;
@@ -254,25 +270,18 @@ public class VenueHireSystem {
       return;
     }
 
-    // if the date for specific venue has already booked
-    if (venueList.get(bookingVenueNumber).getCode().equals(bookingCode)) {
-      for (Booking bookNumber : bookingList) {
-        if (bookNumber.getDate().equals(bookingDate)) {
-          successBook = false;
-          MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.getMessage(
-              bookingVenueName, bookingDate);
-          MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(
-              bookingVenueName, bookingDate);
-        }
-      }
-    }
-
-    // pass all condition, booking create
+    // pass all condition, create booking
     if (successBook) {
       String bookingReference = BookingReferenceGenerator.generateBookingReference();
       // create booking object new booking and store the following variables
       Booking newBooking =
-          new Booking(bookingVenueName, bookingCode, bookingDate, bookingEmail, bookingCapacity);
+          new Booking(
+              bookingVenueName,
+              bookingCode,
+              bookingReference,
+              bookingDate,
+              bookingEmail,
+              bookingCapacity);
       // add the object to the bookingList arrayList
       bookingList.add(newBooking);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.getMessage(
@@ -283,7 +292,36 @@ public class VenueHireSystem {
   }
 
   public void printBookings(String venueCode) {
-    // TODO implement this method
+    // initialise bookingVenueNumber to -1
+    bookingVenueNumber = -1;
+    // find the index of first booking in bookingList
+    for (int i = 0; i < venueList.size(); i++) {
+      if (bookingList.get(i).getCode().equals(venueCode)) {
+
+        // store the name of the venue
+        bookingVenueName = venueList.get(i).getName();
+        // get the location of venue in venueList
+        bookingVenueNumber = i;
+      }
+    }
+    // If there are no bookings for the venue yet, then it’s next available date is 01/01/2024
+    // (today).
+    if (bookingVenueNumber == -1) {
+      availableDate = currentDate;
+    }
+    // If a booking already exists for 01/01/2024 (today), then the next available date is
+    // 02/01/2024 (tomorrow).
+
+    // If a booking already exists for today and tomorrow, then the next available date is
+    // 03/01/2024.
+    // If there is one booking 01/01/2024 (today), and the next one is 5 days away, then the next
+    // available date is 02/01/2024 (tomorrow).
+    // The next available date will also need updating when the system time changes. For example,
+    // assume that the system date is 01/01/2024:
+
+    // If the system date moves forward to 20/01/2024, and there are no bookings for the venue yet,
+    // then it’s next available date is 20/01/2024 (the new today).
+
   }
 
   public void addCateringService(String bookingReference, CateringType cateringType) {
