@@ -99,6 +99,31 @@ public class VenueHireSystem {
       // set available date to current date
       availableDate = currentDate;
 
+      // check for next availableDate
+      for (int i = 0; i < bookingList.size(); i++) {
+        if (bookingList.get(i).getCode().equals(venueCode)
+            && bookingList.get(i).getDate().equals(availableDate)) {
+          // get the available day
+          String[] availableDateParts = availableDate.split("/");
+          int availableDay = Integer.parseInt(availableDateParts[0]); // "DD"
+          String availableMonth = availableDateParts[1]; // "MM"
+          String availableYear = availableDateParts[2]; // "YYYY"
+          // get the booking day
+          String bookingDate = bookingList.get(i).getDate();
+          String[] bookingDateParts = bookingDate.split("/");
+          int bookingDay = Integer.parseInt(bookingDateParts[0]); // "DD"
+          for (int j = availableDay; j < 32; j++) {
+            if (j != bookingDay) {
+              availableDate = Integer.toString(j) + "/" + availableMonth + "/" + availableYear;
+              if (j < 10) {
+                availableDate = "0" + availableDate;
+              }
+              break;
+            }
+          }
+        }
+      }
+
       MessageCli.VENUE_ENTRY.getMessage(
           venueName, venueCode, capacityInput, hireFeeInput, availableDate);
       MessageCli.VENUE_ENTRY.printMessage(
