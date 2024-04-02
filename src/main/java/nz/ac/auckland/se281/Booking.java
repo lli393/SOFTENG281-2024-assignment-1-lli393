@@ -1,6 +1,7 @@
 package nz.ac.auckland.se281;
 
 public class Booking {
+
   private String bookingVenueName;
   private String bookingCode;
   private String bookingReference;
@@ -29,5 +30,9 @@ public class Booking {
 
   public String getCode() {
     return bookingCode;
+  }
+
+  public String getName() {
+    return bookingVenueName;
   }
 }
