@@ -379,8 +379,9 @@ public class VenueHireSystem {
   public void printBookings(String venueCode) {
     // get printing values
     String venueName = null;
-    String bookingReference;
+    String bookingReference = null;
     String bookingDate;
+    boolean bookingExist = false;
     for (Venue venues : venueList) {
       if (venues.getCode().equals(venueCode)) {
         venueName = venues.getName();
@@ -393,11 +394,19 @@ public class VenueHireSystem {
     for (Booking bookings : bookingList) {
       // if it is the venue
       if (venueCode.equals(bookings.getCode())) {
+        // booking exists
+        bookingExist = true;
         bookingReference = bookings.getReference();
         bookingDate = bookings.getDate();
         MessageCli.PRINT_BOOKINGS_ENTRY.getMessage(bookingReference, bookingDate);
         MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(bookingReference, bookingDate);
       }
+    }
+    // if no booking
+    if (!bookingExist) {
+      MessageCli.PRINT_BOOKINGS_NONE.getMessage(venueName);
+      MessageCli.PRINT_BOOKINGS_NONE.printMessage(venueName);
+      return;
     }
   }
 
