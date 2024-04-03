@@ -376,7 +376,30 @@ public class VenueHireSystem {
     }
   }
 
-  public void printBookings(String venueCode) {}
+  public void printBookings(String venueCode) {
+    // get printing values
+    String venueName = null;
+    String bookingReference;
+    String bookingDate;
+    for (Venue venues : venueList) {
+      if (venues.getCode().equals(venueCode)) {
+        venueName = venues.getName();
+      }
+    }
+    // print booking header
+    MessageCli.PRINT_BOOKINGS_HEADER.getMessage(venueName);
+    MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venueName);
+    // loop the bookings
+    for (Booking bookings : bookingList) {
+      // if it is the venue
+      if (venueCode.equals(bookings.getCode())) {
+        bookingReference = bookings.getReference();
+        bookingDate = bookings.getDate();
+        MessageCli.PRINT_BOOKINGS_ENTRY.getMessage(bookingReference, bookingDate);
+        MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(bookingReference, bookingDate);
+      }
+    }
+  }
 
   public void addCateringService(String bookingReference, CateringType cateringType) {
     // TODO implement this method
