@@ -11,7 +11,7 @@ public class VenueHireSystem {
   String currentDate;
   String availableDate;
   String oldBookingCapacity;
-  int bookingVenueNumber;
+  int bookingVenueIndex;
   String bookingVenueName = null;
   String bookingVenueCapacity;
   private ArrayList<Booking> bookingList = new ArrayList<Booking>();
@@ -92,35 +92,49 @@ public class VenueHireSystem {
       // If the system date moves forward to 20/01/2024, and there are no bookings for the venue
       // yet, then it’s next available date is 20/01/2024 (the new today).
 
-      // if current date is not set
-      if (currentDate == null) {
-        currentDate = "DD/MM/YYYY";
-      }
       // set available date to current date
       availableDate = currentDate;
+      // if current date is not set
+      if (currentDate == null) {
+        availableDate = "00/00/0000";
+      }
 
-      // check for next availableDate
-      for (int i = 0; i < bookingList.size(); i++) {
-        if (bookingList.get(i).getCode().equals(venueCode)
-            && bookingList.get(i).getDate().equals(availableDate)) {
-          // get the available day
-          String[] availableDateParts = availableDate.split("/");
-          int availableDay = Integer.parseInt(availableDateParts[0]); // "DD"
-          String availableMonth = availableDateParts[1]; // "MM"
-          String availableYear = availableDateParts[2]; // "YYYY"
-          // get the booking day
-          String bookingDate = bookingList.get(i).getDate();
-          String[] bookingDateParts = bookingDate.split("/");
-          int bookingDay = Integer.parseInt(bookingDateParts[0]); // "DD"
-          for (int j = availableDay; j < 32; j++) {
-            if (j != bookingDay) {
-              availableDate = Integer.toString(j) + "/" + availableMonth + "/" + availableYear;
-              if (j < 10) {
-                availableDate = "0" + availableDate;
-              }
+      // get the available day
+      String[] availableDateParts = availableDate.split("/");
+      int availableDay = Integer.parseInt(availableDateParts[0]); // "DD"
+      String availableMonth = availableDateParts[1]; // "MM"
+      String availableYear = availableDateParts[2]; // "YYYY"
+      boolean available;
+
+      // from today till end of the month
+      for (int day = availableDay; day < 32; day++) {
+        // assume it the day is not booked
+        available = true;
+        // check for available day in the booking dates
+        for (Booking book : bookingList) {
+          // if its the same code
+          if (book.getCode().equals(venueCode)) {
+            // get the booking day
+            String bookingDate = book.getDate();
+            String[] bookingDateParts = bookingDate.split("/");
+            int bookingDay = Integer.parseInt(bookingDateParts[0]); // "DD"
+
+            // if the day is booked
+            if (bookingDay == day) {
+              // break immediately if found
+              available = false;
               break;
             }
           }
+        }
+        // if the day is available/not booked
+        if (available) {
+          // update available date
+          availableDate = Integer.toString(day) + "/" + availableMonth + "/" + availableYear;
+          if (day < 10) {
+            availableDate = "0" + availableDate;
+          }
+          break;
         }
       }
 
@@ -243,15 +257,15 @@ public class VenueHireSystem {
     }
 
     // venue code must exist
-    for (int i = 0; i < venueList.size(); i++) {
-      if (venueList.get(i).getCode().equals(bookingCode)) {
+    for (int index = 0; index < venueList.size(); index++) {
+      if (venueList.get(index).getCode().equals(bookingCode)) {
         // if code exists, exit the for loop
         // store the name of the venue
-        bookingVenueName = venueList.get(i).getName();
+        bookingVenueName = venueList.get(index).getName();
         // get the location of venue in venueList
-        bookingVenueNumber = i;
+        bookingVenueIndex = index;
         // get the venue capacity for booking
-        bookingVenueCapacity = venueList.get(i).getCapacity();
+        bookingVenueCapacity = venueList.get(index).getCapacity();
 
         // if the date for specific venue has already booked
         for (Booking bookNumber : bookingList) {
