@@ -18,6 +18,7 @@ public class VenueHireSystem {
   String printVenueName;
   String bookingReference;
   String bookingDate;
+  // Task 3 field
 
   public VenueHireSystem() {}
 
