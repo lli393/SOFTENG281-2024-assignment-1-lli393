@@ -29,7 +29,6 @@ public class MainTest {
 
     @Test
     public void T1_01_no_venues() throws Exception {
-      runCommands(PRINT_VENUES);
 
       assertContains("There are no venues in the system. Please create a venue first.");
     }

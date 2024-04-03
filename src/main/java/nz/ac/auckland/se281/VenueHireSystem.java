@@ -15,6 +15,9 @@ public class VenueHireSystem {
   String bookingVenueName = null;
   String bookingVenueCapacity;
   private ArrayList<Booking> bookingList = new ArrayList<Booking>();
+  String printVenueName;
+  String bookingReference;
+  String bookingDate;
 
   public VenueHireSystem() {}
 
@@ -72,6 +75,7 @@ public class VenueHireSystem {
     } else if (venueAmount == 0) {
       // the quantity is “no”, “venues” is plural, and the sentence ends with a period (“.”)
       MessageCli.NO_VENUES.printMessage();
+      return;
     }
 
     // loop for every successfully added venue(s)
@@ -378,18 +382,23 @@ public class VenueHireSystem {
 
   public void printBookings(String venueCode) {
     // get printing values
-    String venueName = null;
-    String bookingReference = null;
-    String bookingDate;
+    printVenueName = null;
     boolean bookingExist = false;
+
     for (Venue venues : venueList) {
       if (venues.getCode().equals(venueCode)) {
-        venueName = venues.getName();
+        printVenueName = venues.getName();
       }
     }
+    // if venue doesn't exist or no venue in the system
+    if (printVenueName == null || venueList.isEmpty()) {
+      MessageCli.PRINT_BOOKINGS_VENUE_NOT_FOUND.getMessage(venueCode);
+      MessageCli.PRINT_BOOKINGS_VENUE_NOT_FOUND.printMessage(venueCode);
+      return;
+    }
     // print booking header
-    MessageCli.PRINT_BOOKINGS_HEADER.getMessage(venueName);
-    MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venueName);
+    MessageCli.PRINT_BOOKINGS_HEADER.getMessage(printVenueName);
+    MessageCli.PRINT_BOOKINGS_HEADER.printMessage(printVenueName);
     // loop the bookings
     for (Booking bookings : bookingList) {
       // if it is the venue
@@ -404,8 +413,8 @@ public class VenueHireSystem {
     }
     // if no booking
     if (!bookingExist) {
-      MessageCli.PRINT_BOOKINGS_NONE.getMessage(venueName);
-      MessageCli.PRINT_BOOKINGS_NONE.printMessage(venueName);
+      MessageCli.PRINT_BOOKINGS_NONE.getMessage(printVenueName);
+      MessageCli.PRINT_BOOKINGS_NONE.printMessage(printVenueName);
       return;
     }
   }
