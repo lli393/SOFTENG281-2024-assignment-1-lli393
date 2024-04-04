@@ -427,8 +427,13 @@ public class VenueHireSystem {
     for (Booking bookings : bookingList) {
       // if bookingReference can be found
       if (bookings.getReference().equals(bookingReference)) {
-        // get cost for the service
+        // get the number of attendees
+        int bookingCapacity = Integer.parseInt(bookings.getCapacity());
+        // get cost for the service per person
         int cateringCost = cateringType.getCostPerPerson();
+        // get the total cost for catering
+        cateringCost = cateringCost * bookingCapacity;
+
         // add a service
         Catering newCatering = new Catering(bookingReference, cateringType, cateringCost);
         serviceList.add(newCatering);
@@ -464,7 +469,25 @@ public class VenueHireSystem {
   }
 
   public void addServiceFloral(String bookingReference, FloralType floralType) {
-    // TODO implement this method
+    for (Booking bookings : bookingList) {
+      // if bookingReference can be found
+      if (bookings.getReference().equals(bookingReference)) {
+        // get cost for the service
+        int floralCost = floralType.getCost();
+        // add a service
+        Floral newCatering = new Floral(bookingReference, floralType, floralCost);
+        serviceList.add(newCatering);
+        // print
+        MessageCli.ADD_SERVICE_SUCCESSFUL.getMessage(
+            "Floral (" + floralType.getName() + ")", bookingReference);
+        MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage(
+            "Floral (" + floralType.getName() + ")", bookingReference);
+        return;
+      }
+    }
+    // if bookingReference is not found
+    MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.getMessage("Catering", bookingReference);
+    MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Catering", bookingReference);
   }
 
   public void viewInvoice(String bookingReference) {

@@ -39,4 +39,8 @@ public class Booking {
   public String getReference() {
     return bookingReference;
   }
+
+  public String getCapacity() {
+    return bookingCapacity;
+  }
 }
