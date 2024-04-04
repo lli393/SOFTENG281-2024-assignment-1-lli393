@@ -426,10 +426,16 @@ public class VenueHireSystem {
   public void addCateringService(String bookingReference, CateringType cateringType) {
     for (Booking bookings : bookingList) {
       // if bookingReference can be found
-      if (bookings.getReference() == bookingReference) {
+      if (bookings.getReference().equals(bookingReference)) {
         // add a service
         Catering newCatering = new Catering(bookingReference, cateringType);
         serviceList.add(newCatering);
+        // print
+        MessageCli.ADD_SERVICE_SUCCESSFUL.getMessage(
+            "Catering (" + cateringType.getName() + ")", bookingReference);
+        MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage(
+            "Catering (" + cateringType.getName() + ")", bookingReference);
+        return;
       }
     }
     // if bookingReference is not found
