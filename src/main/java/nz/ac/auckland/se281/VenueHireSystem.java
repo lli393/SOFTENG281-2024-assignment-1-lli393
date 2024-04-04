@@ -446,7 +446,21 @@ public class VenueHireSystem {
   }
 
   public void addServiceMusic(String bookingReference) {
-    // TODO implement this method
+    for (Booking bookings : bookingList) {
+      // if bookingReference can be found
+      if (bookings.getReference().equals(bookingReference)) {
+        // add a service
+        Music newMusic = new Music(bookingReference);
+        serviceList.add(newMusic);
+        // print
+        MessageCli.ADD_SERVICE_SUCCESSFUL.getMessage("Music", bookingReference);
+        MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Music", bookingReference);
+        return;
+      }
+    }
+    // if bookingReference is not found
+    MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.getMessage("Music", bookingReference);
+    MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Music", bookingReference);
   }
 
   public void addServiceFloral(String bookingReference, FloralType floralType) {
