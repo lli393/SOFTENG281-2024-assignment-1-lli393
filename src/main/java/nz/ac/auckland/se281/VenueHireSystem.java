@@ -489,9 +489,11 @@ public class VenueHireSystem {
   }
 
   public void viewInvoice(String bookingReference) {
+    boolean bookingFound = false;
     for (Booking bookings : bookingList) {
       // if bookingReference can be found
       if (bookings.getReference().equals(bookingReference)) {
+        bookingFound = true;
         // print invoice
         // top half
         // Booking Reference, Customer Email, Date of Booking, Party Date, Number of Guests, Venue
@@ -513,9 +515,10 @@ public class VenueHireSystem {
         // cost breakdown
         // venue fee
         String venueCode = bookings.getCode();
+        String venueFee = null;
         for (Venue venues : venueList) {
           if (venues.getCode().equals(venueCode)) {
-            String venueFee = venues.getFee();
+            venueFee = venues.getFee();
             MessageCli.INVOICE_CONTENT_VENUE_FEE.getMessage(venueFee);
             MessageCli.INVOICE_CONTENT_VENUE_FEE.printMessage(venueFee);
           }
@@ -569,13 +572,16 @@ public class VenueHireSystem {
         }
 
         // bottom half
-        String totalFee = Integer.toString(cateringFee + musicFee + floralFee);
+        String totalFee =
+            Integer.toString(Integer.parseInt(venueFee) + cateringFee + musicFee + floralFee);
         MessageCli.INVOICE_CONTENT_BOTTOM_HALF.getMessage(totalFee);
         MessageCli.INVOICE_CONTENT_BOTTOM_HALF.printMessage(totalFee);
       }
     }
-    // if bookingReference does not exist
-    MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.getMessage(bookingReference);
-    MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);
+    if (!bookingFound) {
+      // if bookingReference does not exist
+      MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.getMessage(bookingReference);
+      MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);
+    }
   }
 }
