@@ -1,6 +1,7 @@
 package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
+import nz.ac.auckland.Catering;
 import nz.ac.auckland.se281.Types.CateringType;
 import nz.ac.auckland.se281.Types.FloralType;
 
@@ -8,17 +9,19 @@ public class VenueHireSystem {
   // Task 1 field
   private ArrayList<Venue> venueList = new ArrayList<Venue>();
   // Task 2 field
-  String currentDate;
-  String availableDate;
-  String oldBookingCapacity;
-  int bookingVenueIndex;
-  String bookingVenueName = null;
-  String bookingVenueCapacity;
+  private String currentDate;
+  private String availableDate;
+  private String oldBookingCapacity;
+  private int bookingVenueIndex;
+  private String bookingVenueName = null;
+  private String bookingVenueCapacity;
   private ArrayList<Booking> bookingList = new ArrayList<Booking>();
-  String printVenueName;
-  String bookingReference;
-  String bookingDate;
+  private String printVenueName;
+  private String bookingReference;
+  private String bookingDate;
+
   // Task 3 field
+  private ArrayList<Service> serviceList = new ArrayList<Service>();
 
   public VenueHireSystem() {}
 
@@ -421,7 +424,17 @@ public class VenueHireSystem {
   }
 
   public void addCateringService(String bookingReference, CateringType cateringType) {
-    // TODO implement this method
+    for (Booking bookings : bookingList) {
+      // if bookingReference can be found
+      if (bookings.getReference() == bookingReference) {
+        // add a service
+        Catering newCatering = new Catering(bookingReference, cateringType);
+        serviceList.add(newCatering);
+      }
+    }
+    // if bookingReference is not found
+    MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.getMessage("Catering", bookingReference);
+    MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Catering", bookingReference);
   }
 
   public void addServiceMusic(String bookingReference) {
