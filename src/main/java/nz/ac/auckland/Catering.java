@@ -5,11 +5,12 @@ import nz.ac.auckland.se281.Types;
 
 public class Catering extends Service {
 
-  private static final Types Types = null;
-  protected Types.CateringType cateringType;
+  protected String cateringTypeName;
+  protected int cateringCost;
 
-  public Catering(String bookingReference, Types.CateringType cateringType) {
-    super(bookingReference, Types);
-    this.cateringType = cateringType;
+  public Catering(String bookingReference, Types.CateringType cateringType, int cateringCost) {
+    super(bookingReference);
+    this.cateringTypeName = cateringType.getName();
+    this.cateringCost = cateringCost;
   }
 }

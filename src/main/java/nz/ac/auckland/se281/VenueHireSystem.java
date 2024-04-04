@@ -427,8 +427,10 @@ public class VenueHireSystem {
     for (Booking bookings : bookingList) {
       // if bookingReference can be found
       if (bookings.getReference().equals(bookingReference)) {
+        // get cost for the service
+        int cateringCost = cateringType.getCostPerPerson();
         // add a service
-        Catering newCatering = new Catering(bookingReference, cateringType);
+        Catering newCatering = new Catering(bookingReference, cateringType, cateringCost);
         serviceList.add(newCatering);
         // print
         MessageCli.ADD_SERVICE_SUCCESSFUL.getMessage(
