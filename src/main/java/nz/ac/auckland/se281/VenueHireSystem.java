@@ -1,7 +1,6 @@
 package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
-import nz.ac.auckland.Catering;
 import nz.ac.auckland.se281.Types.CateringType;
 import nz.ac.auckland.se281.Types.FloralType;
 
@@ -12,7 +11,6 @@ public class VenueHireSystem {
   private String currentDate;
   private String availableDate;
   private String oldBookingCapacity;
-  private int bookingVenueIndex;
   private String bookingVenueName = null;
   private String bookingVenueCapacity;
   private ArrayList<Booking> bookingList = new ArrayList<Booking>();
@@ -123,7 +121,7 @@ public class VenueHireSystem {
           // if its the same code
           if (book.getCode().equals(venueCode)) {
             // get the booking day
-            String bookingDate = book.getDate();
+            String bookingDate = book.getBookingDate();
             String[] bookingDateParts = bookingDate.split("/");
             int bookingDay = Integer.parseInt(bookingDateParts[0]); // "DD"
 
@@ -270,15 +268,14 @@ public class VenueHireSystem {
         // if code exists, exit the for loop
         // store the name of the venue
         bookingVenueName = venueList.get(index).getName();
-        // get the location of venue in venueList
-        bookingVenueIndex = index;
+
         // get the venue capacity for booking
         bookingVenueCapacity = venueList.get(index).getCapacity();
 
         // if the date for specific venue has already booked
         for (Booking bookNumber : bookingList) {
           if (bookNumber.getName().equals(bookingVenueName)
-              && bookNumber.getDate().equals(bookingDate)) {
+              && bookNumber.getBookingDate().equals(bookingDate)) {
             successBook = false;
             MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.getMessage(
                 bookingVenueName, bookingDate);
@@ -372,6 +369,7 @@ public class VenueHireSystem {
               bookingVenueName,
               bookingCode,
               bookingReference,
+              currentDate,
               bookingDate,
               bookingEmail,
               bookingCapacity);
@@ -410,7 +408,7 @@ public class VenueHireSystem {
         // booking exists
         bookingExist = true;
         bookingReference = bookings.getReference();
-        bookingDate = bookings.getDate();
+        bookingDate = bookings.getBookingDate();
         MessageCli.PRINT_BOOKINGS_ENTRY.getMessage(bookingReference, bookingDate);
         MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(bookingReference, bookingDate);
       }
@@ -430,9 +428,9 @@ public class VenueHireSystem {
         // get the number of attendees
         int bookingCapacity = Integer.parseInt(bookings.getCapacity());
         // get cost for the service per person
-        int cateringCost = cateringType.getCostPerPerson();
+        int cateringCostPerPerson = cateringType.getCostPerPerson();
         // get the total cost for catering
-        cateringCost = cateringCost * bookingCapacity;
+        String cateringCost = Integer.toString(cateringCostPerPerson * bookingCapacity);
 
         // add a service
         Catering newCatering = new Catering(bookingReference, cateringType, cateringCost);
@@ -475,8 +473,8 @@ public class VenueHireSystem {
         // get cost for the service
         int floralCost = floralType.getCost();
         // add a service
-        Floral newCatering = new Floral(bookingReference, floralType, floralCost);
-        serviceList.add(newCatering);
+        Floral newFloral = new Floral(bookingReference, floralType, Integer.toString(floralCost));
+        serviceList.add(newFloral);
         // print
         MessageCli.ADD_SERVICE_SUCCESSFUL.getMessage(
             "Floral (" + floralType.getName() + ")", bookingReference);
@@ -491,6 +489,93 @@ public class VenueHireSystem {
   }
 
   public void viewInvoice(String bookingReference) {
-    // TODO implement this method
+    for (Booking bookings : bookingList) {
+      // if bookingReference can be found
+      if (bookings.getReference().equals(bookingReference)) {
+        // print invoice
+        // top half
+        // Booking Reference, Customer Email, Date of Booking, Party Date, Number of Guests, Venue
+        // name
+        MessageCli.INVOICE_CONTENT_TOP_HALF.getMessage(
+            bookingReference,
+            bookings.getMail(),
+            bookings.getDate(),
+            bookings.getBookingDate(),
+            bookings.getCapacity(),
+            bookings.getName());
+        MessageCli.INVOICE_CONTENT_TOP_HALF.printMessage(
+            bookingReference,
+            bookings.getMail(),
+            bookings.getDate(),
+            bookings.getBookingDate(),
+            bookings.getCapacity(),
+            bookings.getName());
+        // cost breakdown
+        // venue fee
+        String venueCode = bookings.getCode();
+        for (Venue venues : venueList) {
+          if (venues.getCode().equals(venueCode)) {
+            String venueFee = venues.getFee();
+            MessageCli.INVOICE_CONTENT_VENUE_FEE.getMessage(venueFee);
+            MessageCli.INVOICE_CONTENT_VENUE_FEE.printMessage(venueFee);
+          }
+        }
+
+        // search through all services and sum up the costs for each service
+        // declare values outside of loop
+        boolean catering = false;
+        boolean music = false;
+        boolean floral = false;
+        int cateringFee = 0;
+        int musicFee = 0;
+        int floralFee = 0;
+        String cateringTypeName = null;
+        String floralTypeName = null;
+
+        for (Service services : serviceList) {
+          // catering fee
+          if (services.getType().equals("Catering")) {
+            catering = true;
+            cateringFee += Integer.parseInt(services.getCost());
+            cateringTypeName = ((Catering) services).getName();
+          } else if (services.getType().equals("Music")) {
+            // music fee
+            music = true;
+            musicFee += Integer.parseInt(services.getCost());
+          } else if (services.getType().equals("Floral")) {
+            // floral fee
+            floral = true;
+            floralFee += Integer.parseInt(services.getCost());
+            floralTypeName = ((Floral) services).getName();
+          }
+        }
+
+        // print results
+        if (catering) {
+          MessageCli.INVOICE_CONTENT_CATERING_ENTRY.getMessage(
+              cateringTypeName, Integer.toString(cateringFee));
+          MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(
+              cateringTypeName, Integer.toString(cateringFee));
+        }
+        if (music) {
+          MessageCli.INVOICE_CONTENT_MUSIC_ENTRY.getMessage(Integer.toString(musicFee));
+          MessageCli.INVOICE_CONTENT_MUSIC_ENTRY.printMessage(Integer.toString(musicFee));
+        }
+        if (floral) {
+          MessageCli.INVOICE_CONTENT_FLORAL_ENTRY.getMessage(
+              floralTypeName, Integer.toString(floralFee));
+          MessageCli.INVOICE_CONTENT_FLORAL_ENTRY.printMessage(
+              floralTypeName, Integer.toString(floralFee));
+        }
+
+        // bottom half
+        String totalFee = Integer.toString(cateringFee + musicFee + floralFee);
+        MessageCli.INVOICE_CONTENT_BOTTOM_HALF.getMessage(totalFee);
+        MessageCli.INVOICE_CONTENT_BOTTOM_HALF.printMessage(totalFee);
+      }
+    }
+    // if bookingReference does not exist
+    MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.getMessage(bookingReference);
+    MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);
   }
 }

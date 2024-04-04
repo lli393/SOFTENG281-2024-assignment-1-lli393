@@ -3,11 +3,24 @@ package nz.ac.auckland.se281;
 public class Floral extends Service {
 
   protected String floralTypeName;
-  protected int floralCost;
+  protected String floralCost;
 
-  public Floral(String bookingReference, Types.FloralType floralType, int floralCost) {
+  public Floral(String bookingReference, Types.FloralType floralType, String floralCost) {
     super(bookingReference);
     this.floralTypeName = floralType.getName();
     this.floralCost = floralCost;
+  }
+
+  @Override
+  public String getType() {
+    return "Floral";
+  }
+
+  public String getCost() {
+    return floralCost;
+  }
+
+  public String getName() {
+    return floralTypeName;
   }
 }
