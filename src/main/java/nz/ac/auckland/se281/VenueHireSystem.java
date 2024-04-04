@@ -484,8 +484,8 @@ public class VenueHireSystem {
       }
     }
     // if bookingReference is not found
-    MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.getMessage("Catering", bookingReference);
-    MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Catering", bookingReference);
+    MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.getMessage("Floral", bookingReference);
+    MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Floral", bookingReference);
   }
 
   public void viewInvoice(String bookingReference) {
