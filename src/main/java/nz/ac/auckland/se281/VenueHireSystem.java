@@ -536,17 +536,18 @@ public class VenueHireSystem {
         String floralTypeName = null;
 
         for (Service services : serviceList) {
-          // catering fee
+          // search in each service and get their details
           if (services.getType().equals("Catering")) {
+            // get catering details for printing
             catering = true;
             cateringFee += Integer.parseInt(services.getCost());
             cateringTypeName = ((Catering) services).getName();
           } else if (services.getType().equals("Music")) {
-            // music fee
+            // get music detail for printing
             music = true;
             musicFee += Integer.parseInt(services.getCost());
           } else if (services.getType().equals("Floral")) {
-            // floral fee
+            // git floral detail for printing
             floral = true;
             floralFee += Integer.parseInt(services.getCost());
             floralTypeName = ((Floral) services).getName();
@@ -554,6 +555,7 @@ public class VenueHireSystem {
         }
 
         // print results
+        // if they have added the service, print the details in this given order
         if (catering) {
           MessageCli.INVOICE_CONTENT_CATERING_ENTRY.getMessage(
               cateringTypeName, Integer.toString(cateringFee));
