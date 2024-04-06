@@ -16,6 +16,7 @@ public class Catering extends Service {
     return "Catering";
   }
 
+  @Override
   public String getCost() {
     return cateringCost;
   }

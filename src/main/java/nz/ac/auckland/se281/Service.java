@@ -12,4 +12,8 @@ public abstract class Service extends Object {
   public abstract String getType();
 
   public abstract String getCost();
+
+  public String getReference() {
+    return bookingReference;
+  }
 }

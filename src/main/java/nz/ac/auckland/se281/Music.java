@@ -14,6 +14,7 @@ public class Music extends Service {
     return "Music";
   }
 
+  @Override
   public String getCost() {
     return musicCost;
   }

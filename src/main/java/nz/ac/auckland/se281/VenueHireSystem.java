@@ -537,16 +537,19 @@ public class VenueHireSystem {
 
         for (Service services : serviceList) {
           // search in each service and get their details
-          if (services.getType().equals("Catering")) {
+          if (services.getType().equals("Catering")
+              && services.getReference().equals(bookingReference)) {
             // get catering details for printing
             catering = true;
             cateringFee += Integer.parseInt(services.getCost());
             cateringTypeName = ((Catering) services).getName();
-          } else if (services.getType().equals("Music")) {
+          } else if (services.getType().equals("Music")
+              && services.getReference().equals(bookingReference)) {
             // get music detail for printing
             music = true;
             musicFee += Integer.parseInt(services.getCost());
-          } else if (services.getType().equals("Floral")) {
+          } else if (services.getType().equals("Floral")
+              && services.getReference().equals(bookingReference)) {
             // git floral detail for printing
             floral = true;
             floralFee += Integer.parseInt(services.getCost());

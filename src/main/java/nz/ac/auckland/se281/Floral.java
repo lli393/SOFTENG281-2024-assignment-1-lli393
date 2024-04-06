@@ -16,6 +16,7 @@ public class Floral extends Service {
     return "Floral";
   }
 
+  @Override
   public String getCost() {
     return floralCost;
   }
